@@ -1,5 +1,5 @@
 #  Codes and Routines for the Ground-based Fog and Aerosol Spectrometer (GFAS)
-
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ## Overview
 
 The **GFAS** (Ground-based Fog and Aerosol Spectrometer) is a newly developed instrument for in-situ single-particle measurements of cloud microphysical properties. Unlike conventional light scattering spectrometers that derive only particle size and number from forward-scattering intensity, the GFAS additionally measures the **change in polarization of backward scattered light**, enabling investigation of particle morphology and composition.
@@ -8,7 +8,9 @@ Particle sizing is based on Mie-Lorenz theory. A key methodological contribution
 
 The instrument has been validated in both laboratory and field settings. Under laboratory conditions, the GFAS can distinguish water droplets from non-spherical dust particles via polarization measurements. Field measurements further reveal that cloud particle optical properties differ measurably from pure water, suggesting an elevated refractive index in ambient cloud droplets.
 
-> 📄 **Reference:** *Haberstock et al. (2026, to be submitted)*
+This repository is used to collect code developed jointly by the scientific community, starting with the work presented in Haberstock et al. (2026).
+
+> 📄 **Reference:** *Haberstock et al. (2026, to be submitted to AMT)*
 
 ---
 
@@ -46,6 +48,13 @@ GFAS/
 | `plots/` | Scripts to reproduce all figures in Paper I by Haberstock et al. (2026) |
 
 ---
+
+## Instrument & Manufacturer
+
+The GFAS (model **GFAS-DPOL**) is manufactured by [Droplet Measurement Technologies (DMT)](https://www.dropletmeasurement.com/). The instrument combines high-sensitivity forward and backscatter particle size measurement with polarization detection and wind speed/direction measurement — designed for fog formation studies, number concentration, liquid water content, extinction coefficient and visibility retrieval in warm and mixed-phase fog.
+
+🔗 **Full technical details:** [DMT GFAS-DPOL product page](https://www.dropletmeasurement.com/product/ground-based-fog-aerosol-spectrometer-with-polarization-detection/)
+
 
 ## Getting Started
 
