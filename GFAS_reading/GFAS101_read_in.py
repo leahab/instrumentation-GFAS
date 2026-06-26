@@ -1,4 +1,17 @@
 
+'''
+This is the sub-routine for GFAS read-in
+
+author: Lea Haberstock, Stockholm University, Department of Environmental Science, Atmospheric Unit 
+developed toether with: Darrel Baumgardner and Paul Zieger
+
+contact: lea.haberstock@aces.su.se 
+used in publication: Haberstock et al. 2026 (submitted to AMT) 
+
+
+Last modified June 26 2026
+'''
+
 #%% Read in functions for the GFAS101 version (manufactured after 2023, with only one gain)
 
 import os

@@ -1,3 +1,24 @@
+
+'''
+This is the sub-routine for GFAS correction processes including:
+- attenuation correction
+- qualifier/sizer filter
+- scale factor input
+- sizing regression
+
+It uses the following datasets: 
+- scale factors in PbP_processing/detector_scaling_factors
+
+author: Lea Haberstock, Stockholm University, Department of Environmental Science, Atmospheric Unit 
+developed toether with: Darrel Baumgardner and Paul Zieger
+
+contact: lea.haberstock@aces.su.se 
+used in publication: Haberstock et al. 2026 (submitted to AMT) 
+
+
+Last modified June 26 2026
+
+'''
 #%% GFAS processing function script
 # load packages
 import os
