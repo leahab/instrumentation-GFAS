@@ -244,6 +244,16 @@ def loss_calc_GFAS101(GFAS_df, Wind, wind_GFAS = True, min_efficiency=0.01, retu
 
 ############## function for returning corrected data #################
 def correction(df, efficiency, min_efficiency = 0.01, pandas = True):
+    ''' This function applies the calculated efficiencies on the size distribution data.
+        input:
+        df: GFAS size distribution data (only). has to be the same size bins as used in loss_calc_GFAS101
+        efficiency: the overall sampling efficiency calculated in loss_calc_GFAS101 with return_sep = False (total_efficiency)
+        min_efficiency: cutoff for when to apply efficiency value. if too low sample loss corrections might skyrocket
+        pandas: if True returns pandas df, else xarray dataset
+        
+        returns: corrected size distribution
+
+    '''    
     df = df.resample('1min').mean() # make sure that the data is in 1 min resolution
     # df: pandas dataframe with only size data!
     idx = np.intersect1d(df.index, efficiency.DateTime)
@@ -266,6 +276,7 @@ def correct_parameter (corrected_data, min_val_series,  Dmin =0.4499999880791, m
         min_val_series: df from which the minimum value (min_valED) for the mask is supposed to be taken 
         Dmin: lower bin limit in µm
         min_valED: minimum value for the number concentration to calculate ED
+        log: if True: size distribution was in log space, if False: SD was in natural space
         returns: pandas dataframe with dN/dlogDp, N, ED, and LWC
     '''
 
@@ -354,6 +365,7 @@ def classify_quality(flag):
     # The remaining values are 0, which corresponds to "Fully Assured"
     
     return quality_assurance
+
 import matplotlib.colors as colors
 def plot_flag_parameters (flag, cbar):
     ''' defining cmap, norm, midpoints and tick labels for flagging plot'''

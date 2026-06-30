@@ -64,7 +64,7 @@ def qual_filter(df):
 
 #%% sizing regression
 
-scale_factors = pd.read_csv('/home/leha7253/instrumentation-GFAS/PbP_processing/detector_scaling_factors', index_col = 0)
+scale_factors = pd.read_csv('detector_scaling_factors', index_col = 0)
 
 def sizing_model(df):
     scale_forward = 1/scale_factors.iloc[0, 0] #1.8*10**10 #1.96*10**10#
