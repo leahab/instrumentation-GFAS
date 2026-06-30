@@ -16,6 +16,12 @@ from metpy.units import units
 
 # calculate angle between wind direction and sampling direction
 def angle_diff(a,b):
+    ''' 
+    calculates the steep angle between two wind directions in degree
+    a: angle 1
+    b: angle 2
+    returns: steep angle between the two angles
+    '''
     head_diff = a-b
     head_diff = head_diff.where(head_diff < 180, (360+b)-a)
     head_diff = head_diff.where(head_diff > -180, (360+a)-b)
@@ -35,9 +41,7 @@ def loss_calc_GFAS101(GFAS_df, Wind, wind_GFAS = True, min_efficiency=0.01, retu
 
         needs: angle_diff, xarray, numpy, pandas
     '''
-    #wind_GFAS = True
-
-
+    
     gfas = GFAS_df.resample('1min').mean() # make sure that the data is in 1 min resolution
 
     if wind_GFAS == True: # if no wind speed data is given, use the wind speed from the GFAS data

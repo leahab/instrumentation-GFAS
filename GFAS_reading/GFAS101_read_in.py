@@ -37,6 +37,10 @@ import dask.dataframe as dd
 #%% read in pbp data
 # check if given string is a date format
 def is_date_format(name, datefmt):
+    '''checks if given string is actually a date
+    name: given string
+    datefmt: the format the date is meant to be in 
+    '''
     try:
         dt.datetime.strptime(name, datefmt)
         return True
@@ -45,7 +49,15 @@ def is_date_format(name, datefmt):
     
 
 # this function is used for selecting time periods within the folder structure of the GFAS
-def timeselect(f,date,datefmt,starttime,endtime,timefmt):            
+def timeselect(f,date,datefmt,starttime,endtime,timefmt):    
+    ''' this function is used for selecting time periods within the folder structure of the GFAS
+    f: directory
+    date: part of the directory that is the date
+    datefmt: the format the date is meant to be in 
+    starttime: beginning of timespan in fmt datefmt
+    endtime: end of timespan in fmt datefmt
+    timefmt: the format the date is meant to be in 
+    '''        
     start = calendar.timegm(dt.datetime.strptime(starttime, timefmt).date().timetuple())
     end = calendar.timegm(dt.datetime.strptime(endtime, timefmt).date().timetuple())
 
@@ -55,6 +67,10 @@ def timeselect(f,date,datefmt,starttime,endtime,timefmt):
 
 # read in for zipped files
 def read_csv_from_zip(zip_path, filetype):
+    ''' read in routine if folders are zipped
+    zip_path: filepath
+    filetype: targeted GFAS filetype: 'GFAS_PbP_Data' or  'GFAS_User_Data'
+    '''
     try:
         with ZipFile(zip_path) as zip_file:
             for text_file in zip_file.infolist():
@@ -62,9 +78,8 @@ def read_csv_from_zip(zip_path, filetype):
                     df = pd.read_csv(BytesIO(zip_file.open(text_file.filename).read()), encoding='latin1')
                     df.rename(columns=lambda x: x[0:6] if x.startswith('Bin') else x.strip(), inplace=True)
                     df['datetime'] = (pd.to_datetime(dt.datetime(1904, 1, 1)) + 
-                                      pd.to_timedelta(df['Computer Time (sec)'].values, 's') - 
-                                      pd.Timedelta('1 min 10 sec'))
-                    df['Computer Time (sec)'] -= pd.Timedelta('1 min 10 sec').total_seconds()
+                                      pd.to_timedelta(df['Computer Time (sec)'].values, 's'))
+                    
                     return df
     except pd.errors.EmptyDataError:
         print(f"No columns to parse from file {zip_path}")
@@ -76,9 +91,8 @@ def read_csv_file(file_path, filetype):
         df = pd.read_csv(file_path, encoding='latin1')
         df.rename(columns=lambda x: x[0:6] if x.startswith('Bin') else x.strip(), inplace=True)
         df['datetime'] = (pd.to_datetime(dt.datetime(1904, 1, 1)) + 
-                          pd.to_timedelta(df['Computer Time (sec)'].values, 's') - 
-                          pd.Timedelta('1 min 10 sec'))
-        df['Computer Time (sec)'] -= pd.Timedelta('1 min 10 sec').total_seconds()
+                          pd.to_timedelta(df['Computer Time (sec)'].values, 's'))
+       
         return df
     except pd.errors.EmptyDataError:
         print(f"No columns to parse from file {file_path}")
@@ -87,6 +101,15 @@ def read_csv_file(file_path, filetype):
 #this function calls the functions above and reads in the GFAS data either as a dask product or as a dataframe
 def readPbP101(path, starttime, endtime, timefmt,
                filetype='GFAS_PbP_Data', compute=True):
+    '''
+    this function calls the functions above and reads in the GFAS data either as a dask product or as a dataframe
+    path: path in which all the different GFAS data are stored. This path should lead to the folders that are called by the day of the sampling
+    starttime: beginning of timespan in fmt datefmt
+    endtime: end of timespan in fmt datefmt
+    timefmt: the format the date is meant to be in
+    filetype: targeted GFAS filetype: 'GFAS_PbP_Data' or  'GFAS_User_Data'
+    compute: if True, computes the data to pandas dataframe. If False, keeps it as a dask thingie
+    '''
 
     if path is None:
         raise ValueError("Path to data folder must be provided")
@@ -187,6 +210,15 @@ def readPbP101(path, starttime, endtime, timefmt,
 
 #%% read in 1Hz data
 def readGFAS101(path=None, starttime=None, endtime=None, timefmt=None, filetype='GFAS_User_Data'):
+    '''
+    this function reads in the GFAS 1Hz data either as a dataframe
+    path: path in which all the different GFAS data are stored. This path should lead to the folders that are called by the day of the sampling
+    starttime: beginning of timespan in fmt datefmt
+    endtime: end of timespan in fmt datefmt
+    timefmt: the format the date is meant to be in
+    filetype: targeted GFAS filetype: should be 'GFAS_User_Data'
+    '''
+
     if (path is None) or (starttime is None) or (endtime is None) or (timefmt is None):
         print('Path, starttime, endtime, and timefmt as input needed...')
         #return None
