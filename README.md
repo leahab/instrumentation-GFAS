@@ -20,19 +20,26 @@ This repository is used to collect code developed jointly by the scientific comm
 GFAS/
 │
 ├── GFAS_reading/               # Functions for reading raw GFAS data files
-│   └── ...
+│   └── GFAS101_read_in             # GFAS (version 101) read in functions for PbP and 1hz data formats
 │
-├── calibrations/               # Calibration routines and data processing
-│   ├── glass_bead/             # Glass bead calibration
-│   ├── autocalibration_I/      # Autocalibration method I
-│   ├── autocalibration_II/     # Autocalibration method II
-│   └── autocalibration_III/    # Autocalibration method III
+├── calibrations/                   # Calibration routines and data processing
+│   ├── MieCalculations             # subroutine to calculate theoretical scattering cross sections
+│   ├── glass_bead                  # Glass bead calibration
+│   ├── autocalibration_I           # Autocalibration method I
+│   └── autocalibration_II_III      # Autocalibration method II and  III
+│   
 │
-├── P2P_processing/             # GFAS particle-to-particle (P2P) processing pipeline
-│   └── ...
+├── P2P_processing/                 # GFAS particle-by-particle (PbP) processing pipeline
+│   ├── detector_scaling_factors    # The scaling factors needed to convert the measurement intensity into scattering cross section (calculated in autocalibration I-III)
+│   ├── GFAS101_processing          # subroutines needed for all GFAS raw data to yield reliable results
+│   ├── loss_Calc_functions_GFAS101 #subroutines needed for sample loss corrections
+│   └── PbP_treatment               # script to run the full PbP treatment to retrieve binned and corrected data
 │
-└── plots/                      # Figure generation scripts (Paper I by Haberstock et al., 2026)
-    └── ...
+└── plots/                          # Figure generation scripts (Paper I by Haberstock et al., 2026)
+│   ├── cloudevents                 # list of start and end times of the cloudevents during the measurement campaign
+│   ├── modeled_SCS                 # models the theoretical scattering cross section for different refractive indices
+│   ├── ParticleCoincidence         # calculates and plots probability of particles coinciding during measurements
+│   └──...                          # more to be updated soon
 ```
 
 ### Folder Descriptions
@@ -51,9 +58,9 @@ GFAS/
 
 ## Instrument & Manufacturer
 
-The GFAS (model **GFAS-DPOL**) is manufactured by [Droplet Measurement Technologies (DMT)](https://www.dropletmeasurement.com/). The instrument combines high-sensitivity forward and backscatter particle size measurement with polarization detection and wind speed/direction measurement — designed for fog formation studies, number concentration, liquid water content, extinction coefficient and visibility retrieval in warm and mixed-phase fog.
+The GFAS (model **GFAS-DPOL**) is manufactured by [envea](https://envea.global/). The instrument combines high-sensitivity forward and backscatter particle size measurement with polarization detection and wind speed/direction measurement — designed for fog formation studies, number concentration, liquid water content, extinction coefficient and visibility retrieval in warm and mixed-phase fog.
 
-🔗 **Full technical details:** [DMT GFAS-DPOL product page](https://www.dropletmeasurement.com/product/ground-based-fog-aerosol-spectrometer-with-polarization-detection/)
+🔗 **Full technical details:** [DMT GFAS-DPOL product page](https://envea.global/product/ground-based-fog-aerosol-spectrometer-with-polarization-detection/?_gl=1*1oeb8xm*_up*MQ..*_ga*ODg4MTEyNDI5LjE3ODI5ODc0MzQ.*_ga_5XMNKCHKE6*czE3ODI5ODc0MzQkbzEkZzEkdDE3ODI5ODc0MzQkajYwJGwwJGgxNDYwNzU1MTIy*_ga_1KNED64NVJ*czE3ODI5ODc0MzQkbzEkZzEkdDE3ODI5ODc0MzQkajYwJGwwJGgxMzk0MTA2NDQz)
 
 
 ## Getting Started
@@ -63,7 +70,7 @@ git clone https://github.com/SU-air/instrumentation-GFAS.git
 cd instrumentation-GFAS
 ```
 
-*Add installation/dependency instructions here (e.g., required MATLAB version, Python environment, etc.)*
+*required Python environment: GFAS101.yml*
 
 ---
 

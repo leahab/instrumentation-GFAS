@@ -36,7 +36,8 @@ def sct_SLSR(m, diam, wvl, ang):
     angle_res = (ang[-1]-ang[0])/30
     for k1, d in enumerate(diam):
         x = d * np.pi / wvl  # size parameter
-        theta, SL, SR, SU = pms.ScatteringFunction(m=m, wavelength=wvl, diameter=d, nMedium=1.0,  minAngle=ang[0], maxAngle=ang[-1], angularResolution= angle_res)
+        theta, SL, SR, SU = pms.ScatteringFunction(m=m, wavelength=wvl, diameter=d, nMedium=1.0,  
+                                                   minAngle=ang[0], maxAngle=ang[-1], angularResolution= angle_res)
         sc_l = x ** (-2) * np.trapz((SL) * np.sin(theta), theta)
         sc_r = x ** (-2) * np.trapz((SR) * np.sin(theta), theta)
         sc_tot =x ** (-2) * np.trapz((SL+SR) * np.sin(theta), theta)
@@ -47,3 +48,50 @@ def sct_SLSR(m, diam, wvl, ang):
         sc_R = sc_R 
         sc_TOT = sc_TOT 
     return sc_L, sc_R, sc_TOT
+
+def mie_calculation(diameters, m=1.33):
+     '''
+     Process the Mie Calculations for a defined list of diameters and a range of diameters
+
+     parameters:
+     diameters : 1D-array    List of diameters
+     m : float or complex    Refractive index
+     output: scattering cross sections for 
+        sigma_fw: forward scattering
+        sigma_S: perpendicularly polarized backward scattering
+        sigma_P: parallel polarized backward scattering
+        sigma_x: measurable parallel polarized backward scattering
+        sigma_y: measurable perpendicularly polarized backward scattering
+     '''
+
+     n=len(diameters)
+     ang_bw = np.linspace(168, 176.5, 30) # backscattering opening angles
+     ang_fw = np.linspace(3.8, 20, 30)  # forward scattering opening angles
+
+     sigma_fw=np.zeros(n)
+     sigma_S=np.zeros(n)
+     sigma_P=np.zeros(n)
+     sigma_J=np.zeros(n)
+     for i,di in enumerate(diameters):
+         x = di * np.pi / 660  # size parameter, unities [nm]/[nm]
+         theta_fw, SL1, SR1, _ = pms.ScatteringFunction(m=m, wavelength=660, diameter=di, nMedium=1.0,  
+                                                        minAngle=ang_fw[0], maxAngle=ang_fw[-1], angularResolution= (ang_fw[-1]-ang_fw[0])/30 )
+         theta_bw, SL, SR, _ = pms.ScatteringFunction(m=m, wavelength=660, diameter=di, nMedium=1.0,  
+                                                      minAngle=ang_bw[0], maxAngle=ang_bw[-1], angularResolution= (ang_bw[-1]-ang_bw[0])/30 )
+         sc_tot =x ** (-2) * np.trapz((SL1+SR1) * np.sin(theta_fw), theta_fw)
+         sc_L =x ** (-2) * np.trapz((SL) * np.sin(theta_bw), theta_bw)
+         sc_R =x ** (-2) * np.trapz((SR) * np.sin(theta_bw), theta_bw)
+         sigma_fw[i]=1e4*sc_tot*0.25 * np.pi * (di * 1e-9) ** 2 #di converted to meters, sigma converted to cm^2
+         sigma_P[i]=1e4*sc_R*0.25 * np.pi * (di * 1e-9) ** 2 #di converted to meters, sigma converted to cm^2
+         sigma_S[i]=1e4*sc_L*0.25 * np.pi * (di * 1e-9) ** 2 #di converted to meters, sigma converted to cm^2
+
+         S1,S2=np.zeros(30, dtype=complex), np.zeros(30, dtype=complex)
+         theta= ang_bw*np.pi/180 # into rad
+         for j in range(30):
+             S1[j],S2[j]=pms.MieS1S2(m, x, np.cos(theta[j]))
+         sigma_J[i]= x**(-2)/4 *1e4 *np.pi * (di * 1e-9)**2 * np.trapz(np.real(S1 * np.conjugate(S2))* np.sin(theta), theta)
+
+     sigma_x=.75*(sigma_S+sigma_P)-.5*sigma_J
+     sigma_y=.25*(sigma_S+sigma_P)+.5*sigma_J
+
+     return sigma_fw, sigma_S, sigma_P, sigma_x, sigma_y
