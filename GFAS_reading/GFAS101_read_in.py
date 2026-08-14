@@ -119,7 +119,7 @@ def readPbP101(path, starttime, endtime, timefmt,
     # ----------------------------
     flist = [
         f for f in glob.glob(os.path.join(path, "*"))
-        if timeselect(f, f[-8:], '%Y%m%d', starttime, endtime, timefmt)
+        if is_date_format(f[-8:], '%Y%m%d') and timeselect(f, f[-8:], '%Y%m%d', starttime, endtime, timefmt)
     ]
 
     if not flist:
@@ -227,7 +227,7 @@ def readGFAS101(path=None, starttime=None, endtime=None, timefmt=None, filetype=
         print('Filetype has to be GFAS_User_Data or GFAS_Diagnostic_Data')
         #return None
 
-    flist = [f for f in glob.glob(path + "/*") if timeselect(f, f[-8:], '%Y%m%d', starttime, endtime, timefmt)]
+    flist = [f for f in glob.glob(path + "/*") if is_date_format(f[-8:], '%Y%m%d') and timeselect(f, f[-8:], '%Y%m%d', starttime, endtime, timefmt)]
 
     # Collect information about files that failed to load
     failed_files = []
