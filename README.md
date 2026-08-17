@@ -23,23 +23,26 @@ GFAS/
 │   └── GFAS101_read_in             # GFAS (version 101) read in functions for PbP and 1hz data formats
 │
 ├── calibrations/                   # Calibration routines and data processing
-│   ├── MieCalculations             # subroutine to calculate theoretical scattering cross sections
-│   ├── glass_bead                  # Glass bead calibration
+│   ├── MieCalculations             # subroutine to calculate theoretical scattering cross sections and plot Figure 2 and 3
+│   ├── glass_bead                  # Glass bead calibration, plotting Figure A4, A5, S1,
 │   ├── autocalibration_I           # Autocalibration method I
-│   └── autocalibration_II_III      # Autocalibration method II and  III
+│   └── autocalibration_II_III      # Autocalibration method II and  III, plotting Figure  S4
 │   
 │
-├── P2P_processing/                 # GFAS particle-by-particle (PbP) processing pipeline
-│   ├── detector_scaling_factors    # The scaling factors needed to convert the measurement intensity into scattering cross section (calculated in autocalibration I-III)
+├── PbP_processing/                 # GFAS particle-by-particle (PbP) processing pipeline
+│   ├── detector_scaling_factors    # The scaling factors needed to convert the measurement intensity into scattering cross section
 │   ├── GFAS101_processing          # subroutines needed for all GFAS raw data to yield reliable results
 │   ├── loss_Calc_functions_GFAS101 #subroutines needed for sample loss corrections
-│   └── PbP_treatment               # script to run the full PbP treatment to retrieve binned and corrected data
+│   ├── PbP_level0_processing       # script to run PbP processing routine for PbP raw data to level 1 PbP data
+│   └── PbP_to_1hz                  # script to run the PbP processing routine from level 1 to level 2 (binned) data
 │
 └── plots/                          # Figure generation scripts (Paper I by Haberstock et al., 2026)
 │   ├── cloudevents                 # list of start and end times of the cloudevents during the measurement campaign
 │   ├── modeled_SCS                 # models the theoretical scattering cross section for different refractive indices
-│   ├── ParticleCoincidence         # calculates and plots probability of particles coinciding during measurements
-│   └──...                          # more to be updated soon
+│   ├── ParticleCoincidence         # calculates and plots probability of particles coinciding during measurements, Figure C1
+│   ├── Polarization_FB_analysis    # Plotting Figures 6-9 
+│   ├── SBO_plots                   # Plotting Figure 5, S5, S6
+│   └──...                          # updates might follow
 ```
 
 ### Folder Descriptions
