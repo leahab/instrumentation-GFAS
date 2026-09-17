@@ -75,9 +75,9 @@ def mie_calculation(diameters, m=1.33):
      for i,di in enumerate(diameters):
          x = di * np.pi / 660  # size parameter, unities [nm]/[nm]
          theta_fw, SL1, SR1, _ = pms.ScatteringFunction(m=m, wavelength=660, diameter=di, nMedium=1.0,  
-                                                        minAngle=ang_fw[0], maxAngle=ang_fw[-1], angularResolution= (ang_fw[-1]-ang_fw[0])/30 )
+                                                        minAngle=ang_fw[0], maxAngle=ang_fw[-1], angularResolution= (ang_fw[-1]-ang_fw[0])/100 )
          theta_bw, SL, SR, _ = pms.ScatteringFunction(m=m, wavelength=660, diameter=di, nMedium=1.0,  
-                                                      minAngle=ang_bw[0], maxAngle=ang_bw[-1], angularResolution= (ang_bw[-1]-ang_bw[0])/30 )
+                                                      minAngle=ang_bw[0], maxAngle=ang_bw[-1], angularResolution= (ang_bw[-1]-ang_bw[0])/100 )
          sc_tot =x ** (-2) * np.trapz((SL1+SR1) * np.sin(theta_fw), theta_fw)
          sc_L =x ** (-2) * np.trapz((SL) * np.sin(theta_bw), theta_bw)
          sc_R =x ** (-2) * np.trapz((SR) * np.sin(theta_bw), theta_bw)
